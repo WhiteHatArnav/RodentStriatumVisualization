@@ -1,5 +1,5 @@
 # Code Author: Arnav Joshi
-# Date of online publication on Github: May 17th, 2024
+# Date of online publication on Github: May 19th, 2024
 # Author Email: arnavj@alumni.princeton.edu
 #______________________________________________________________
 
@@ -346,7 +346,7 @@ area_min_threshold_cells = 30
 area_max_threshold_cells = 300
 
 # Function Calls for all 3 functions:
-#Striosomal_Detection(lower_pink, upper_pink, min_area_threshold_Striosome)
+Striosomal_Detection(lower_pink, upper_pink, min_area_threshold_Striosome)
 Blood_Vessel_Detection(lower_black, upper_black, min_area_threshold_Vein)
-#Cell_Detector_and_Counter_Connected_Component(area_min_threshold_cells, area_max_threshold_cells)
+Cell_Detector_and_Counter_Connected_Component(area_min_threshold_cells, area_max_threshold_cells)
 

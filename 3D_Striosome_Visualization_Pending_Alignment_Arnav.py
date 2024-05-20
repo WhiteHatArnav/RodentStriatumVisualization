@@ -1,3 +1,7 @@
+# Code Author: Arnav Joshi
+# Date of online publication on Github: May 19th, 2024
+# Author Email: arnavj@alumni.princeton.edu
+#______________________________________________________________
 # See Readme or the 2D Core script for an explanation of these libraries
 import cv2
 import numpy as np
@@ -46,7 +50,7 @@ cross_secs_dir = '/Users/arnavjoshi/Desktop/EnhancedCrossSecs'
                 
 input_imgs = []
 for filename in os.listdir(cross_secs_dir):
-    img = cv2.imread(os.path.join(dir, filename))
+    img = cv2.imread(os.path.join(cross_secs_dir, filename))
     input_imgs.append(img)
 
 # Extract the shape and fill (contour) of striosomes detected in the cross section images

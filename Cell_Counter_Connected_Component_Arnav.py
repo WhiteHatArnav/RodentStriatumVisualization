@@ -1,5 +1,5 @@
 # Code Author: Arnav Joshi
-# Date of online publication on Github: May 17th, 2024
+# Date of online update on Github: May 19th, 2024
 # Author Email: arnavj@alumni.princeton.edu
 #______________________________________________________________
 
@@ -70,65 +70,61 @@ def Cell_Detector_and_Counter_Connected_Component(area_min_thresh, area_max_thre
 
         # Get CC_STAT_AREA component as stats[label, COLUMN]. This is to do area based analysis
         areas = stats[1:, cv2.CC_STAT_AREA]
-    # to count the cells
-    count = 0
+        # to count the cells initialize a count variable
+        count = 0
 
-    # the following are self explanatory
-    mean_area = np.mean(areas[np.logical_and(areas > 30, areas < 300)])
-    sd_area = np.std(areas[np.logical_and(areas > 30, areas < 300)])
+        # the following are self explanatory
+        mean_area = np.mean(areas[np.logical_and(areas > 30, areas < 300)])
+        sd_area = np.std(areas[np.logical_and(areas > 30, areas < 300)])
 
-    # drawing circles around the cells through this loop
-    for i in range(1, nlabels):  # Iterate over connected components (the fos cells)
-                                 # (excluding the background which is why we use nlabels)
+        # drawing circles around the cells through this loop
+        # Iterate over connected components (the fos cells)
+        # (excluding the background which is why we use nlabels)
         
-        # just a variable to hold the area value for the relevant detected fos cell candidate
-        area = areas[i - 1]
+        for i in tqdm(range(1, nlabels), leave = False):  
+     
+            # just a variable to hold the area value for the relevant detected fos cell candidate
+            area = areas[i - 1]
 
-        # We can take in the input of area limits for cells from the user so I have commented it
-        # out here:
+            # We can take in the input of area limits for cells from the user so I have commented it
+            # out here:
 
-        # area_min_thresh = 30
-        # area_max_thresh = 300
-        if area_max_thresh >= area >= area_min_thresh:  # Filter components based on area
+            # area_min_thresh = 30
+            # area_max_thresh = 300
+            if area_max_thresh >= area >= area_min_thresh:  # Filter components based on area
 
-            # In the following steps we are seeing if the area of the cell is sufficiently filled
-            # with blue for it to be a cell
+                # In the following steps we are seeing if the area of the cell is sufficiently filled
+                # with blue for it to be a cell
 
-            # Calculate circle parameters for circling the cell and to make sure its a cell 
-            center = (int(centroids[i][0]), int(centroids[i][1]))
-            radius = int(np.sqrt(area / np.pi))
+                # Calculate circle parameters for circling the cell and to make sure its a cell 
+                center = (int(centroids[i][0]), int(centroids[i][1]))
+                radius = int(np.sqrt(area / np.pi))
 
-            # Calculate the blue area within the circle for calculating how much of the cell is actually blue
-            blue_area = np.sum(thr[center[1] - radius:center[1] + radius, center[0] - radius:center[0] + radius] == 255)
+                # Calculate the blue area within the circle for calculating how much of the cell is actually blue
+                blue_area = np.sum(thr[center[1] - radius:center[1] + radius, center[0] - radius:center[0] + radius] == 255)
 
-            # Calculate the percentage of the circle filled with blue (self explanatory)
-            blue_percentage = blue_area / (np.pi * radius ** 2)  # Ratio of blue area to circle area
+                # Calculate the percentage of the circle filled with blue (self explanatory)
+                blue_percentage = blue_area / (np.pi * radius ** 2)  # Ratio of blue area to circle area
 
-            # Draw the red circle around the cell if the blue percentage exceeds a threshold (e.g., 0.5)
-            if blue_percentage > 0.5:
-                cv2.circle(img, center, radius, (0, 0, 255), 2)
-                count += 1
-    # Here we are replacing  tif extensions with jpeg s so we can output lower memory taking images
-    outfile = file.replace(".tif", ".jpg")
+                # Draw the red circle around the cell if the blue percentage exceeds a threshold (e.g., 0.5)
+                if blue_percentage > 0.5:
+                    cv2.circle(img, center, radius, (0, 0, 255), 2)
+                    count += 1
+                # this calculates cell count. Make it a list append operation to get a list of counts of images. 
+                # Here we are replacing  tif extensions with jpeg s so we can output lower memory taking images
+                outfile = file.replace(".tif", ".jpg")
 
-    # Saving the resultant images
-    cv2.imwrite(os.path.join(output_dir, f"circled_cells_{outfile}"), img)
-    cv2.imwrite(os.path.join(output_dir, f"binary_{outfile}"), thr)
+                # Saving the resultant images
+                cv2.imwrite(os.path.join(output_dir, f"circled_cells_{outfile}"), img)
+                cv2.imwrite(os.path.join(output_dir, f"binary_{outfile}"), thr)
 
-    mean_cell_area.append(mean_area)
-    sd_cell_area.append(sd_area)
+                mean_cell_area.append(mean_area)
+                sd_cell_area.append(sd_area)
 
-    # Calculating the stats
-    average_mean_cell_area = np.mean(mean_cell_area)
-    mean_sd_of_cell_area = np.mean(sd_cell_area)
-    std_dev_in_mean_cell_area = np.std(mean_cell_area)
-
-
-    # Printing the stats
-    print("Numbers of Cells: ", count)
-    print("Mean Cell Area:", average_mean_cell_area)
-    print("Mean Standard Deviation of Cell Area per image:", mean_sd_of_cell_area)
-    print("Mean Standard Deviation of Cell Area for all images:", std_dev_in_mean_cell_area)
+                # Calculating the stats. Make these list opetations to print them for each image.
+                average_mean_cell_area = np.mean(mean_cell_area)
+                mean_sd_of_cell_area = np.mean(sd_cell_area)
+                std_dev_in_mean_cell_area = np.std(mean_cell_area)
 
 
 
