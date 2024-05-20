@@ -1,9 +1,10 @@
 # RodentStriatumVisualization
 
 # Details about the code:
-Description: This is a Python Programmes to identify and outline structures in Rodent Striatum and Visualie it in 3-D.  | 
-Code Author: Arnav Joshi  |   
-Date of online upload on Github: May 19th, 2024  |  
+Description: This is a Python Programmes to identify and outline structures 
+in Rodent Striatum and Visualie it in 3-D.  
+Code Author: Arnav Joshi  
+Date of online upload on Github: May 19th, 2024  
 Author Email: arnavj@alumni.princeton.edu
 
 # Aim of this Readme
